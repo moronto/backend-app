@@ -18,15 +18,15 @@ class DetilsReservationAdmin(admin.ModelAdmin):
 admin.site.register(DetilsReservation,DetilsReservationAdmin)
 
 class ModulaireAdmin(admin.ModelAdmin):
-    list_display=("gamme","dimension","refMateriel")
+    list_display=("id","gamme","dimension","refMateriel")
 admin.site.register(Modulaire,ModulaireAdmin)
 
 class GroupeElectrogeneAdmin(admin.ModelAdmin):
-    list_display=("puissance","marque","dimension","refMateriel")
+    list_display=("id","puissance","marque","dimension","refMateriel")
 admin.site.register(GroupeElectrogene,GroupeElectrogeneAdmin)
 
 class CabinesAutonomeAdmin(admin.ModelAdmin):
-    list_display=("gamme","dimension","color","refMateriel")
+    list_display=("id","gamme","dimension","color","refMateriel")
 admin.site.register(CabinesAutonome,CabinesAutonomeAdmin)
 
 

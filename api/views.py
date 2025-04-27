@@ -17,7 +17,7 @@ class StockData(ModelViewSet):
     queryset=Stock.objects.all().order_by('-created_at')
     serializer_class=StockSerializer
 
-@api_view(['GET'])
+@api_view(['GET','PUT'])
 def detailStock(request, ref):
     data=[]
     try:
@@ -94,14 +94,64 @@ def addStock(request):
             )
              
 
-
-       
-
     return Response(data) 
-       
+
+@api_view(['PUT','GET'])
+def updateStock(request,ref):
+    data={}
+    updatedData=request.data
+    if request.method == 'PUT':
+
+        data=request.data
+        st=Stock.objects.get(refMateriel=ref)
+        
+        st.refMateriel=data.get('refMateriel')
+        st.designation=data.get('designation')
+        st.situation=data.get('situation')
+        st.lieu=data.get('lieu')
+        st.categorie=data.get('categorie')
+
+        st.save()
+        
+        
+   
+
+        if data.get('categorie')=='GROUPE ELECTROGENE':
+            
+            GE=GroupeElectrogene.objects.get(refMateriel=ref)
+            GE.puissance=data.get('puissance')
+            GE.marque=data.get('marque')
+            GE.dimension=data.get('dimension')
+            GE.refMateriel=st
+
+            GE.save()
+            
+            
+        elif  data.get('categorie')=='MODULAIRE':
+            MOD=Modulaire.objects.get(refMateriel=ref)
+            MOD.gamme=data.get('gamme')
+            MOD.dimension=data.get('dimension')
+            MOD.refMateriel=st
+            MOD.save()
+            
+        elif  data.get('categorie')=='CABINES AUTONOMES':
+            CAB=CabinesAutonome.objects.get(refMateriel=ref)
+            CAB.gamme=data.get('gamme')
+            CAB.dimension=data.get('dimension')
+            CAB.color=data.get('color')
+            CAB.refMateriel=st
+
+            CAB.save()
+             
+
+    return Response({'msg':"Modification effectuer avec success",
+                     'status':status.HTTP_200_OK}) 
+
+
+
+
 @api_view(['DELETE'])
 def deleteStock(request,ref):
-    print('larefercen est', ref)
     try:
        stock=Stock.objects.get(refMateriel=ref)
     except Stock.DoesNotExist :
