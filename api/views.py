@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from api.serializers import *
-from inventaire.models import Stock
+from inventaire.models import *
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.viewsets import ModelViewSet
@@ -12,7 +12,7 @@ from django.http import JsonResponse
 
 
 
-
+#views Stock management
 class StockData(ModelViewSet):
     queryset=Stock.objects.all().order_by('-created_at')
     serializer_class=StockSerializer
@@ -108,6 +108,7 @@ def updateStock(request,ref):
         st.refMateriel=data.get('refMateriel')
         st.designation=data.get('designation')
         st.situation=data.get('situation')
+        st.client=data.get('client')
         st.lieu=data.get('lieu')
         st.categorie=data.get('categorie')
 
@@ -147,9 +148,6 @@ def updateStock(request,ref):
     return Response({'msg':"Modification effectuer avec success",
                      'status':status.HTTP_200_OK}) 
 
-
-
-
 @api_view(['DELETE'])
 def deleteStock(request,ref):
     try:
@@ -165,3 +163,8 @@ def deleteStock(request,ref):
         status=status.HTTP_200_OK
     )
     
+# views Movements management
+class movements(ModelViewSet):
+    queryset=Movement.objects.all() 
+    serializer_class=MovementSerializer
+

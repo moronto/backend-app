@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 route=DefaultRouter()
 
 route.register('stock',StockData,basename="stock"),
+route.register('movements',movements,basename="movements"),
 
 urlpatterns = [
     path("",include(route.urls)),
@@ -12,5 +13,6 @@ urlpatterns = [
         path('stock/<str:ref>/', deleteStock, name='stock-delete'),
         path('stock/update/<str:ref>/', updateStock, name='update-delete'),
         path('stocks/', addStock, name='addStock'),
+        #url movements
 
 ]

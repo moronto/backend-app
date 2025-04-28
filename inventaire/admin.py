@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 class StockAdmin(admin.ModelAdmin):
-    list_display=("refMateriel","designation","situation","lieu","categorie")
+    list_display=("refMateriel","designation","situation","lieu","client","categorie")
 admin.site.register(Stock,StockAdmin)
 
 class ChargesaffaireAdmin(admin.ModelAdmin):
