@@ -14,5 +14,6 @@ urlpatterns = [
         path('stock/update/<str:ref>/', updateStock, name='update-delete'),
         path('stocks/', addStock, name='addStock'),
         #url movements
+        path('detailsMovement/<int:id>',getMovement,name='detailMovement')
 
 ]

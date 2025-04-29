@@ -168,3 +168,9 @@ class movements(ModelViewSet):
     queryset=Movement.objects.all() 
     serializer_class=MovementSerializer
 
+@api_view(['GET'])
+def getMovement(request,id):
+    move=Movement.objects.get(id=id) 
+    serializer=MovementSerializer(move)
+    return Response(serializer.data)   
+
