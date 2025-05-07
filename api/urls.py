@@ -14,6 +14,10 @@ urlpatterns = [
         path('stock/update/<str:ref>/', updateStock, name='update-delete'),
         path('stocks/', addStock, name='addStock'),
         #url movements
-        path('detailsMovement/<int:id>',getMovement,name='detailMovement')
+        path('detailsMovement/<int:id>',getMovement,name='detailMovement'),
+        path('addSortie/',addSortie,name='addSortie'),
+        path('infoMateriel/<str:ref>',infoMateriel,name='infoMateriel'),
+        path('delete/<int:id>',deleteMovement,name='deleteMovement'),
+        path('retirerMateriel/',retirerMateriel,name='retirerMateriel'),
 
 ]

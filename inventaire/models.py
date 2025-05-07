@@ -43,7 +43,7 @@ class Stock(models.Model):
     designation=models.CharField(max_length=100) 
     situation=models.CharField(max_length=50)
     lieu=models.CharField(max_length=100,null=True)
-    client=models.CharField(max_length=100,null=True)
+    ville=models.CharField(max_length=100,null=True)
     categorie=models.CharField(max_length=50)
     created_at=models.DateTimeField(auto_now_add=True,blank=True)
 
@@ -54,7 +54,7 @@ class GroupeElectrogene(models.Model):
     puissance=models.CharField(max_length=50)
     marque=models.CharField(max_length=50)  
     dimension=models.CharField(max_length=50) 
-    refMateriel=models.ForeignKey(Stock, on_delete=models.CASCADE)
+    refMateriel=models.OneToOneField(Stock, on_delete=models.CASCADE)
 
 class Modulaire(models.Model):
     gammeChoices=[
@@ -63,7 +63,8 @@ class Modulaire(models.Model):
     ]
     gamme=models.CharField(max_length=50,choices=gammeChoices)  
     dimension=models.CharField(max_length=50)
-    refMateriel=models.ForeignKey(Stock, on_delete=models.CASCADE)
+    refMateriel=models.OneToOneField(Stock, on_delete=models.CASCADE)
+
 
 class CabinesAutonome(models.Model):
     gammeChoices=[
@@ -73,14 +74,15 @@ class CabinesAutonome(models.Model):
     gamme=models.CharField(max_length=50,choices=gammeChoices)  
     dimension=models.CharField(max_length=50)
     color=models.CharField(max_length=50)
-    refMateriel=models.ForeignKey(Stock, on_delete=models.CASCADE)
+    refMateriel=models.OneToOneField(Stock, on_delete=models.CASCADE)
+
 
 class Movement(models.Model):
     typeMovement=models.CharField(max_length=20)
     dateMovement=models.DateField()
     typeLocation=models.CharField(max_length=30)
     depot=models.CharField(max_length=30)
-    refMateriel=models.CharField(max_length=30)
+    refMateriel=models.ForeignKey(Stock, on_delete=models.CASCADE)
     designation=models.CharField(max_length=50)
     qte=models.IntegerField()
     client=models.CharField(max_length=60)

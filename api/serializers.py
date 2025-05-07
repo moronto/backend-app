@@ -5,7 +5,7 @@ from inventaire.models import *
 class StockSerializer(serializers.ModelSerializer):
     class Meta:
         model=Stock
-        fields=['refMateriel','designation','situation','lieu','client','categorie']
+        fields='__all__'
 
 class GroupeElectrogeneSerializer(serializers.ModelSerializer) :
     class Meta:

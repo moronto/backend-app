@@ -108,7 +108,7 @@ def updateStock(request,ref):
         st.refMateriel=data.get('refMateriel')
         st.designation=data.get('designation')
         st.situation=data.get('situation')
-        st.client=data.get('client')
+        st.ville=data.get('ville')
         st.lieu=data.get('lieu')
         st.categorie=data.get('categorie')
 
@@ -165,7 +165,7 @@ def deleteStock(request,ref):
     
 # views Movements management
 class movements(ModelViewSet):
-    queryset=Movement.objects.all() 
+    queryset=Movement.objects.all().order_by('-dateMovement')
     serializer_class=MovementSerializer
 
 @api_view(['GET'])
@@ -173,4 +173,69 @@ def getMovement(request,id):
     move=Movement.objects.get(id=id) 
     serializer=MovementSerializer(move)
     return Response(serializer.data)   
+
+
+@api_view(['POST','GET'])
+def addSortie(request):
+    if request.method=='POST':
+        move=MovementSerializer(data=request.data)
+        if move.is_valid():
+            move.save()
+            m=request.data.get('refMateriel')
+            st=Stock.objects.get(refMateriel=m)
+            st.situation='LOUER'
+            st.lieu=request.data.get('lieu')
+            st.ville=request.data.get('ville')
+            st.save()
+            return Response({'msg':f'Vous avez ajouter le {request.POST.get("typeMovement")} de {request.POST.get("refMateriel")}'})   
+        else:
+            return Response({'msg':f'Probleme est servenu lors d enrigistrement de mouvement'})   
+
+
+        
+       
+
+
+
+@api_view(['GET','POST'])
+def infoMateriel(request,ref):
+    mat=Stock.objects.get(refMateriel=ref)
+    ser=StockSerializer(mat)
+    return Response({'data':ser.data}) 
+       
+        
+@api_view(['POST'])
+def retirerMateriel(request):
+    if request.method=='POST':
+        try:
+            serializer=MovementSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                m=request.data.get('refMateriel')
+                st=Stock.objects.get(refMateriel=m)
+                st.situation='DISPONIBLE'
+                st.lieu=""
+                st.ville=""
+                st.save()
+          
+                return Response({'msg': f'Vous avez retirer {m} avec succes'})
+
+        except Exception as e:
+
+           return Response({'error':str(e),})     
+
+@api_view(['DELETE'])  
+def deleteMovement(request,id):
+    if request.method=='DELETE':
+        try:
+           move=Movement.objects.get(id=id) 
+           move.delete()
+        
+           return Response({"msg":f'Vous avez suprimer mouvement de {str(move)}'})
+        except Exception as e:
+           return Response({"msg":'Probleme est servenu lors de suprrission de ce mouvement'})
+
+
+
+        
 
