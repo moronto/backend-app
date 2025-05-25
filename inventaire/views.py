@@ -343,4 +343,3 @@ def deleteMovement(request, id):
     return redirect("movement") 
     
 
-    

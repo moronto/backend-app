@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Count
 from rest_framework import status
 from api.serializers import *
 from inventaire.models import *
@@ -10,8 +11,13 @@ from rest_framework import status
 import json
 from django.http import JsonResponse
 
+#display chart
+@api_view(['GET'])
+def statistiquesMovement(request):
+    movement=Movement.objects.all()
+    serializer=MovementSerializer(movement, many=True)
 
-
+    return Response(serializer.data)
 #views Stock management
 class StockData(ModelViewSet):
     queryset=Stock.objects.all().order_by('-created_at')
@@ -192,11 +198,6 @@ def addSortie(request):
             return Response({'msg':f'Probleme est servenu lors d enrigistrement de mouvement'})   
 
 
-        
-       
-
-
-
 @api_view(['GET','POST'])
 def infoMateriel(request,ref):
     mat=Stock.objects.get(refMateriel=ref)
@@ -210,19 +211,22 @@ def retirerMateriel(request):
         try:
             serializer=MovementSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save()
+                mat=serializer.save()
                 m=request.data.get('refMateriel')
+                print(m)
                 st=Stock.objects.get(refMateriel=m)
                 st.situation='DISPONIBLE'
-                st.lieu=""
-                st.ville=""
+                st.lieu= f"DEPOT   {request.data.get('lieu')}"
+                st.ville=request.data.get('lieu')
                 st.save()
+            else:
+              print(serializer.errors)    
           
-                return Response({'msg': f'Vous avez retirer {m} avec succes'})
 
         except Exception as e:
 
            return Response({'error':str(e),})     
+    return Response({'msg': f'Vous avez retirer {request.data.get("refMateriel")} avec succes'})
 
 @api_view(['DELETE'])  
 def deleteMovement(request,id):
@@ -237,5 +241,45 @@ def deleteMovement(request,id):
 
 
 
-        
+@api_view(['PUT']) 
+def updateMovement(request,id):
+    if request.method=='PUT':
+        req=request.data
+        print(req)
+        try:
+               move=Movement.objects.get(id=id)
+               move.dateMovement=req.get('dateMovement')
+               move.typeLocation=req.get('typeLocation')
+               move.depot=req.get('depot')
+               move.designation=req.get('designation')
+               move.qte=req.get('qte')
+               move.ville=req.get('ville')
+               move.lieu=req.get('lieu')
+               move.matTrans=req.get('matTrans')
+               move.condTrans=req.get('condTrans')
+               move.observations=req.get('observations')
+                
+               move.save()
 
+               return Response({'msg': f'Vous avez modifier details de {request.data.get("refMateriel")}'})
+        except Exception as e:
+            print(e)
+            return Response({'msg':str(e)})           
+
+#handling chargeaffaire
+
+@api_view(['GET'])
+def chargeAffaire(request):
+    if request.method=='GET':
+        charge=Chargesaffaire.objects.all()
+        serializer=ChargesaffaireSerializer(charge,many=True)
+        return Response(serializer.data)
+#handling of reservisation
+
+@api_view(['GET'])
+def reservation(request):
+    if request.method=='GET':
+        reservations=Reservation.objects.all().order_by('dateReservation')
+        serializer=ReservationSerializer(reservations,many=True)
+
+    return Response(serializer.data)

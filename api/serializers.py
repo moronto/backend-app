@@ -27,3 +27,12 @@ class MovementSerializer(serializers.ModelSerializer):
     class Meta:
         model=Movement
         fields='__all__'
+class ReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Reservation
+        fields='__all__'
+
+class ChargesaffaireSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Chargesaffaire    
+        fields='__all__'    

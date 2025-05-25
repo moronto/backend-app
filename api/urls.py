@@ -14,10 +14,16 @@ urlpatterns = [
         path('stock/update/<str:ref>/', updateStock, name='update-delete'),
         path('stocks/', addStock, name='addStock'),
         #url movements
+        path('statistics/',statistiquesMovement,name='statistics'),
         path('detailsMovement/<int:id>',getMovement,name='detailMovement'),
         path('addSortie/',addSortie,name='addSortie'),
         path('infoMateriel/<str:ref>',infoMateriel,name='infoMateriel'),
         path('delete/<int:id>',deleteMovement,name='deleteMovement'),
+        path('update/<int:id>',updateMovement,name='updateMovement'),
         path('retirerMateriel/',retirerMateriel,name='retirerMateriel'),
+        #url chargeaffaire
+        path('chargeaffaire/',chargeAffaire,name='chargeAffaire'),
+        #url reservation
+        path('reservation/',view=reservation,name='reservation'),
 
 ]

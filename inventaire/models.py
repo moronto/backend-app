@@ -16,7 +16,7 @@ class Reservation(models.Model):
     
     refReservation=models.CharField(max_length=20,primary_key=True, )
     chargerAffaire=models.CharField(max_length=20)
-    dateReservation=models.DateField(default=timezone.now())
+    dateReservation=models.DateField(default=timezone.now)
     client=models.CharField(max_length=50)
     etat=models.CharField(max_length=20)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -28,8 +28,8 @@ class DetilsReservation(models.Model):
     refReservation=models.ForeignKey(Reservation, on_delete=models.CASCADE)
     designation=models.CharField(max_length=200)
     qte=models.IntegerField(default=1)
-    dateLivraison=models.DateField(default=timezone.now())
-    dateRetour=models.DateField(default=timezone.now()) 
+    dateLivraison=models.DateField(default=timezone.now)
+    dateRetour=models.DateField(default=timezone.now) 
     def __str__(self):
         return self.designation   
     
@@ -85,11 +85,11 @@ class Movement(models.Model):
     refMateriel=models.ForeignKey(Stock, on_delete=models.CASCADE)
     designation=models.CharField(max_length=50)
     qte=models.IntegerField()
-    client=models.CharField(max_length=60)
-    lieu=models.CharField(max_length=60)
+    ville=models.CharField(max_length=60,null=True)
+    lieu=models.CharField(max_length=60,null=True)
     matTrans=models.CharField(max_length=40,null=True)
     condTrans=models.CharField(max_length=30,null=True)
     observations=models.CharField(max_length=200,null=True)
     def __str__(self):
-        return self.refMateriel
+        return self.refMateriel.__str__()
 
