@@ -31,6 +31,10 @@ class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model=Reservation
         fields='__all__'
+class DetailsReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=DetilsReservation
+        fields='__all__'
 
 class ChargesaffaireSerializer(serializers.ModelSerializer):
     class Meta:

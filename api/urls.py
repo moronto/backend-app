@@ -25,5 +25,6 @@ urlpatterns = [
         path('chargeaffaire/',chargeAffaire,name='chargeAffaire'),
         #url reservation
         path('reservation/',view=reservation,name='reservation'),
+        path('newreservation/',view=newreservation,name='newReservation'),
 
 ]

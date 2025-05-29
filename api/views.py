@@ -73,7 +73,7 @@ def addStock(request):
         )
         
 
-        print(data.get('dimension'))
+      
 
         if data.get('categorie')=='GROUPE ELECTROGENE':
             print('hayi')
@@ -283,3 +283,38 @@ def reservation(request):
         serializer=ReservationSerializer(reservations,many=True)
 
     return Response(serializer.data)
+
+@api_view(['POST'])
+def newreservation(request):
+    if request.method=='POST':
+        # serializer=ReservationSerializer(data=request.data.get('reservation'))
+        # if serializer.is_valid():
+        #     print("ikcham s tamzwarout")
+        #     serializer.save()
+        print(request.data.get("detailsReservation"))
+
+        serializer2=DetailsReservationSerializer(data=request.data.get('detailsReservation'))
+        if serializer2.is_valid():
+            print("ikcham s tisnat")
+            # print(request.data)
+
+            serializer2.save()
+        else:
+            print(serializer2.errors)    
+
+        return Response({'msg':f'Vous avez ajoutez la reservatuin {request.data.get("refReservation")}'})
+      
+      
+      
+      
+      
+      
+      
+        # req=request.data
+        # newdata=Reservation.objects.get_or_create(
+        #     refReservation=req.get('refReservation'),
+        #     chargerAffaire=req.get('chargerAffaire'),
+        #     dateReservation=req.get('dateReservation'),
+        #     client=req.get('client'),
+        #     etat=req.get('etat')
+        # )    
